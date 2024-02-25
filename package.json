@@ -1,0 +1,13 @@
+{
+  "name": "desafio-01-fundamentos-nodejs",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --watch src/server.js"
+  },
+  "keywords": [],
+  "author": "IanGs1",
+  "license": "ISC"
+}
