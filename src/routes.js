@@ -27,5 +27,16 @@ export const routes = [
         .writeHead(201)
         .end(JSON.stringify(data));
     }
+  },
+  {
+    method: "GET",
+    path: "/tasks",
+    handler: (request, response) => {
+      const tasks = database.select("tasks");
+
+      return response
+        .writeHead(200)
+        .end(JSON.stringify(tasks));
+    }
   }
 ]
