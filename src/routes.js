@@ -40,4 +40,17 @@ export const routes = [
         .end(JSON.stringify(tasks));
     }
   },
+  {
+    method: "DELETE",
+    path: buildRoutePath("/tasks/:taskId"),
+    handler: (request, response) => {
+      const { taskId } = request.params;
+
+      database.delete("tasks", taskId);
+
+      return response
+        .writeHead(204)
+        .end();
+    }
+  }
 ]

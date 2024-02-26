@@ -40,14 +40,20 @@ export class Database {
   update(table, id, data) {
     const dataIndex = this.#database.indexOf(data => data.id === id);
 
-    this.#database[table][dataIndex] = data;
+    if (dataIndex > -1) {
+      this.#database[table][dataIndex] = {id, ...data};
 
-    return data;
+      this.#persist();
+    }
   }
 
   delete(table, id) {
-    const dataIndex = this.#database[table].indexOf(data => data.id === id);
+    const rowIndex = this.#database[table].findIndex(row => row.id === id);
 
-    this.#database[table].splice(dataIndex, 1);
+    if (rowIndex > -1) {
+      this.#database[table].splice(rowIndex, 1);
+      
+      this.#persist();
+    }
   }
 }
