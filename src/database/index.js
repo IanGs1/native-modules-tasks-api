@@ -19,8 +19,14 @@ export class Database {
     fs.writeFile(databasePath, JSON.stringify(this.#database));
   }
 
-  select(table) {
+  index(table) {
     const data = this.#database[table] ?? [];
+
+    return data;
+  }
+
+  select(table, id) {
+    const data = this.#database[table].find(data => data.id === id);
 
     return data;
   }
@@ -38,10 +44,14 @@ export class Database {
   }
 
   update(table, id, data) {
-    const dataIndex = this.#database.indexOf(data => data.id === id);
+    const dataIndex = this.#database[table].findIndex(data => data.id === id);
 
     if (dataIndex > -1) {
-      this.#database[table][dataIndex] = {id, ...data};
+      this.#database[table][dataIndex] = {
+        id,
+        ...data,
+        created_at: this.#database[table][dataIndex].created_at,
+      };
 
       this.#persist();
     }

@@ -33,11 +33,52 @@ export const routes = [
     method: "GET",
     path: buildRoutePath("/tasks"),
     handler: (request, response) => {
-      const tasks = database.select("tasks");
+      const tasks = database.index("tasks");
 
       return response
         .writeHead(200)
         .end(JSON.stringify(tasks));
+    }
+  },
+  {
+    method: "PUT",
+    path: buildRoutePath("/tasks/:taskId"),
+    handler: (request, response) => {
+      const { taskId } = request.params;
+      const { title, description } = request.body;
+
+      database.update("tasks", taskId, {
+        title,
+        description,
+        completed_at: null,
+        updated_at: dateFormatter(new Date()),
+      });
+
+      return response
+        .writeHead(204)
+        .end();
+    }
+  },
+  {
+    method: "PATCH",
+    path: buildRoutePath("/tasks/:taskId/complete-task"),
+    handler: (request, response) => {
+      const { taskId } = request.params;
+
+      const { title, description, created_at } = database.select("tasks", taskId);
+
+      database.update("tasks", taskId, {
+        taskId,
+        title,
+        description,
+        completed_at: dateFormatter(new Date()),
+        created_at,
+        updated_at: dateFormatter(new Date()),
+      })
+
+      return response
+      .writeHead(204)
+      .end();
     }
   },
   {
